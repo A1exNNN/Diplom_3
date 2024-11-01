@@ -2,6 +2,7 @@ package tests;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.junit4.DisplayName;
+import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -9,7 +10,6 @@ import pageobjects.MainPage;
 import utils.TestConstants;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @Epic("Тесты главной страницы")
 public class MainPageTest {
@@ -43,41 +43,37 @@ public class MainPageTest {
         assertEquals(TestConstants.LOGIN_PAGE_URL, driver.getCurrentUrl());
     }
 
+    // переделал тесты на переход к разделам булки, соусы, начинки
     @Test
-    @DisplayName("Проверка видимости раздела конструктора - 'Булки'")
+    @DisplayName("Переход к разделу 'Булки'")
     public void testClickBunsSection() {
         MainPage mainPage = new MainPage(driver);
         // Перехожу на главную страницу
         driver.get(TestConstants.STELLAR_BURGERS_URL);
-        // Клик по наименованию раздела "Соусы"
-        mainPage.clickSaucesSection();
-        // Клик по наименованию раздела "Булки"
-        mainPage.clickBunsSection();
-        // Проверяю видимость элемента
-        assertTrue(mainPage.isBunsHeaderDisplayed());
+        Assert.assertTrue("Переход на секцию 'Булки' не работает",
+                mainPage.clickBunsSection());
     }
 
     @Test
-    @DisplayName("Проверка видимости раздела конструктора - 'Соусы'")
+    @DisplayName("Переход к разделу 'Соусы'")
     public void testClickSaucesSection() {
         MainPage mainPage = new MainPage(driver);
         // Перехожу на главную страницу
         driver.get(TestConstants.STELLAR_BURGERS_URL);
-        // Клик по наименованию раздела "Соусы"
-        mainPage.clickSaucesSection();
-        // Проверяю видимость элемента
-        assertTrue(mainPage.isSaucesHeaderDisplayed());
+        Assert.assertTrue("Переход на секцию 'Соусы' не работает",
+                mainPage.clickSaucesSection());
     }
 
+
     @Test
-    @DisplayName("Проверка видимости раздела конструктора - 'Начинки'")
+    @DisplayName("Переход к разделу 'Начинки'")
     public void testClickFillingsSection() {
         MainPage mainPage = new MainPage(driver);
         // Перехожу на главную страницу
         driver.get(TestConstants.STELLAR_BURGERS_URL);
-        // Клик по наименованию раздела "Начинки"
-        mainPage.clickFillingsSection();
-        // Проверяю видимость элемента
-        assertTrue(mainPage.isFillingsHeaderDisplayed());
+        Assert.assertTrue("Переход на секцию 'Начинки' не работает",
+                mainPage.clickFillingsSection());
     }
 }
+
+// переделал тесты на переход к разделам булки, соусы, начинки

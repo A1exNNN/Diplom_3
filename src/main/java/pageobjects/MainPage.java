@@ -25,9 +25,10 @@ public class MainPage {
     private By logo = By.xpath("//div[contains(@class,'AppHeader_header__logo')]");
 
     // Горизонтальные кнопки разделов конструктора "Соберите бургер"
-    private final By bunsSection = By.xpath("//span[text()='Булки']");
-    private final By saucesSection = By.xpath("//span[text()='Соусы']");
-    private final By fillingsSection = By.xpath("//span[text()='Начинки']");
+    private final By bunsSection = By.xpath(".//section[@class = 'BurgerIngredients_ingredients__1N8v2']/div/div[1]");
+    private final By saucesSection = By.xpath(".//section[@class = 'BurgerIngredients_ingredients__1N8v2']/div/div[2]");
+    private final By fillingsSection = By.xpath(".//section[@class = 'BurgerIngredients_ingredients__1N8v2']//div/div[3]");
+    private final String CLASS_NAME_WHEN_CONSTRUCTOR_SECTION_IS_CHOSEN = "tab_tab_type_current__2BEPc";
     // Наименования разделов в ленте конструктора "Соберите бургер"
     private final By saucesHeader = By.xpath("//h2[text()='Соусы']");
     private final By fillingsHeader = By.xpath("//h2[text()='Начинки']");
@@ -68,32 +69,33 @@ public class MainPage {
 
     // Методы для взаимодействия с разделами конструктора
     @Step("Клик по наименованию раздела 'Булки'")
-    public void clickBunsSection() {
-        driver.findElement(bunsSection).click();
+    public boolean clickBunsSection() {
+        // секция "Булки" активна по умолчанию
+        // перейдем на другую секцию, чтобы сделать ее неактивной
+        WebElement souses = driver.findElement(saucesSection);
+        souses.click();
+
+        WebElement buns = driver.findElement(bunsSection);
+        buns.click();
+
+        return checkIfSectionChosen(buns);
     }
 
     @Step("Клик по наименованию раздела 'Соусы'")
-    public void clickSaucesSection() {
-        driver.findElement(saucesSection).click();
+    public boolean clickSaucesSection() {
+        WebElement souses = driver.findElement(saucesSection);
+        souses.click();
+        return checkIfSectionChosen(souses);
     }
 
     @Step("Клик по наименованию раздела 'Начинки'")
-    public void clickFillingsSection() {
-        driver.findElement(fillingsSection).click();
+    public boolean clickFillingsSection() {
+        WebElement fillings = driver.findElement(saucesSection);
+        fillings.click();
+        return checkIfSectionChosen(fillings);
     }
 
-    @Step("Проверка, что заголовок раздела 'Булки' в ленте конструктора видим")
-    public boolean isBunsHeaderDisplayed() {
-        return driver.findElement(bunsHeader).isDisplayed();
-    }
-
-    @Step("Проверка, что заголовок раздела 'Соусы' в ленте конструктора видим")
-    public boolean isSaucesHeaderDisplayed() {
-        return driver.findElement(saucesHeader).isDisplayed();
-    }
-
-    @Step("Проверка, что заголовок раздела 'Начинки' в ленте конструктора видим")
-    public boolean isFillingsHeaderDisplayed() {
-        return driver.findElement(fillingsHeader).isDisplayed();
+    private boolean checkIfSectionChosen(WebElement section) {
+        return section.getAttribute("class").contains(CLASS_NAME_WHEN_CONSTRUCTOR_SECTION_IS_CHOSEN);
     }
 }
